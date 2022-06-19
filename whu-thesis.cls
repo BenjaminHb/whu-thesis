@@ -222,7 +222,7 @@
 % 草稿模式下，显示边框
 
 \RequirePackage { fancyhdr }        % 页眉页脚宏包
-\tl_set:Nn \headrulewidth { \c_zero_dim }  % 页眉线宽
+\tl_set:Nn \headrulewidth { 0.5pt }  % 页眉线宽
 \tl_set:Nn \footrulewidth { \c_zero_dim }  % 页脚线宽
 
 \AtEndPreamble
@@ -248,7 +248,7 @@
         \fancypagestyle { plain }
           {
             \fancyhf {}
-            \fancyfoot [ C ]   { \zihao { 5 } \thepage }
+            \fancyfoot [ C ]   { \zihao { 5 } -\,\thepage\,- }
             \fancyhead [ O C ] { \zihao { 5 } \g__whu_head_odd_tl }
             \fancyhead [ E C ] { \zihao { 5 } \g__whu_head_even_tl }
           }
@@ -257,7 +257,7 @@
         \fancypagestyle { plain }
           {
             \fancyhf {}
-            \fancyfoot [ C ] { \zihao { 5 } \thepage }
+            \fancyfoot [ C ] { \zihao { 5 } -\,\thepage\,- }
           }
       }
   }
@@ -352,6 +352,7 @@
     \dim_set:cn { cft #1 indent } { \parindent }
   }
 
+\renewcommand\cftsubsecindent{4em}
 \dim_zero:N \cftfigindent
 \dim_zero:N \cfttabindent
 
@@ -443,7 +444,7 @@
 \skip_set_eq:NN \footskip   \baselineskip
 
 \dim_set:Nn \footnotesep { 6 pt }
-\setlength { \skip \footins } { \skip_eval:n { 2 \baselineskip } plus 1 fill }
+\setlength{\skip\footins}{ 2em}
 \tl_set:Nn \footnotesize { \songti \zihao { 5 } }
 \tl_set:Nn \footnoterule
   { \noindent \rule [ 1 pt ] { 0.3 \columnwidth } { 1 pt } }
@@ -750,6 +751,25 @@
   { \zhdigits {#1} 年 \zhnumber {#2} 月 }
 \cs_generate_variant:Nn \__whu_date_parse:n { V }
 
+\cs_new_protected:Npn \__whu_date_parse_en:n #1
+  { \__whu_date_parse_en_aux:w #1 \q_stop }
+\cs_new_protected:Npn \__whu_date_parse_en_aux:w #1 / #2 \q_stop
+  { \ifcase #2
+  \or January% 1
+  \or February% 2
+  \or March% 3
+  \or April% 4
+  \or May% 5
+  \or June% 6
+  \or July% 7
+  \or August% 8
+  \or September% 9
+  \or October% 10
+  \or November% 11
+  \or December% 12
+  \fi ,\ #1}
+\cs_generate_variant:Nn \__whu_date_parse_en:n { V }
+
 \tl_if_eq:NnTF \g__whu_option_type_tl { bachelor }
   { \skip_const:Nn \c__whu_baseline_skip { 23 pt } }
   {
@@ -778,11 +798,15 @@
 \tl_new:N \g__whu_info_author_en_tl
 \tl_new:N \g__whu_info_student_number_tl
 \tl_new:N \g__whu_info_school_tl
+\tl_new:N \g__whu_info_school_en_tl
 \tl_new:N \g__whu_info_subject_tl
 \tl_new:N \g__whu_info_major_tl
+\tl_new:N \g__whu_info_major_en_tl
 \tl_new:N \g__whu_info_direction_tl
+\tl_new:N \g__whu_info_direction_en_tl
 \tl_new:N \g__whu_info_date_tl
 \clist_new:N \g__whu_info_advisor_clist
+\clist_new:N \g__whu_info_advisor_en_clist
 \clist_new:N \g__whu_info_keywords_clist
 \clist_new:N \g__whu_info_keywords_en_clist
 
@@ -798,11 +822,15 @@
     author         .tl_gset:N    = \g__whu_info_author_tl,
     author *       .tl_gset:N    = \g__whu_info_author_en_tl,
     school         .tl_gset:N    = \g__whu_info_school_tl,
+    school *       .tl_gset:N    = \g__whu_info_school_en_tl,
     subject        .tl_gset:N    = \g__whu_info_subject_tl,
     major          .tl_gset:N    = \g__whu_info_major_tl,
+    major *        .tl_gset:N    = \g__whu_info_major_en_tl,
     direction      .tl_gset:N    = \g__whu_info_direction_tl,
+    direction *    .tl_gset:N    = \g__whu_info_direction_en_tl,
     date           .tl_gset:N    = \g__whu_info_date_tl,
     advisor        .clist_gset:N = \g__whu_info_advisor_clist,
+    advisor *      .clist_gset:N = \g__whu_info_advisor_en_clist,
     keywords       .clist_gset:N = \g__whu_info_keywords_clist,
     keywords *     .clist_gset:N = \g__whu_info_keywords_en_clist,
 
@@ -941,8 +969,8 @@
     \skip_zero:N \bibsep % 参考文献间距设为 0
     \tl_if_eq:NnT \g__whu_style_bib_style_tl { numerical }
       {
-        \bibliographystyle { data / gbt7714-2005-numerical }
-        % \bibliographystyle { data / gbt7714-2005-whu-numerical }
+        % \bibliographystyle { data / gbt7714-2005-numerical }
+        \bibliographystyle { data / gbt7714-2005-whu-numerical }
 
         \NAT@numberstrue
         \clist_if_in:nVTF { numerical-super , numerical-inline }
@@ -1238,11 +1266,33 @@
   {
     \__whu_new_chapter_page:
     \begin { center }
-      \zihao { 2 } \g__whu_info_title_en_tl
-    \end { center }
-    \vfill
-    \begin { center }
-      \zihao { 4 } \g__whu_info_author_en_tl
+      \begin { minipage } [ t ] [ 5 cm ] { \textwidth }
+        \skip_set:Nn \baselineskip { 40 pt }
+        \centering { \zihao { 2 } \g__whu_info_title_en_tl }
+      \end { minipage }
+      
+      \par \skip_vertical:n { 4 cm }
+      \group_begin:
+        \zihao { 4 }
+        \begin { tabular } { r @ { ： \hbox:n {} } l }
+            Candidate      { \hfill } & \g__whu_info_author_en_tl \\ [ 0.5 em ]
+            Student Number { \hfill } & \g__whu_info_student_number_tl \\ [ 0.5 em ]
+            Supervisor     { \hfill } & \clist_use:Nn \g__whu_info_advisor_en_clist { \enskip } \\ [ 0.5 em ]
+            Major          { \hfill } & \g__whu_info_major_en_tl \\ [ 0.5 em ]
+            Speciality     { \hfill } & \g__whu_info_direction_en_tl \\ [ 0.5 em ]
+        \end { tabular }
+      \group_end:
+      \par \vfill
+      \par \skip_vertical:n { 1 cm }
+      \includegraphics [ width = 4 cm ] { figures / whulogo.pdf }
+      
+      \par \skip_vertical:n { 0.5 cm }
+      \zihao{-2}
+      \g__whu_info_school_en_tl \\
+      {\sc Wuhan\ University}
+      
+      \par \skip_vertical:n { 1 cm }
+      { \heiti \zihao { 3 } \__whu_date_parse_en:V { \g__whu_info_date_tl } }
     \end { center }
     \__whu_new_chapter_page:
   }
@@ -1301,32 +1351,39 @@
 \cs_new_protected:Npn \__whu_make_authorization:
   {
     \__whu_new_chapter_page:
+    \thispagestyle{empty}
     \mode_leave_vertical: \skip_vertical:N \baselineskip
     \noindent \hfil
-    { \zihao { 4 } \heiti \textbf { 武汉大学学位论文使用授权协议书 } }
-    \par \skip_vertical:n { 25 pt }
+    { \zihao { 3 } \heiti \textbf { 武汉大学学位论文使用授权协议书 } }
+    \par \skip_vertical:n { 35 pt }
     \skip_set:Nn \baselineskip { 22 pt }
     本学位论文作者愿意遵守武汉大学关于保存、使用学位论文的管理办法及规定，即：学
     校有权保存学位论文的印刷本和电子版，并提供文献检索与阅览服务；学校可以采用影
     印、缩印、数字化或其它复制手段保存论文；在以教学与科研服务为目的前提下，学校
-    可以在校园网内公布部分或全部内容。 \par
-    一、在本论文提交当年，同意在校园网内以及中国高等教育文献保障系统（CALIS）、
-    高校学位论文系统提供查询及前十六页浏览服务。 \par
-    二、在本论文提交 \hbox:n { \textsquare } 当年/ \hbox:n { \textsquare }一年/
-    \hbox:n { \textsquare } 两年/ \hbox:n { \textsquare }三年以后，同意在校园网
-    内允许读者在线浏览并下载全文，学校可以为存在馆际合作关系的兄弟高校用户提供文
-    献传递服务和交换服务。（保密论文解密后遵守此规定）
-    \par \skip_vertical:n { 10 pt }
+    可以在校园网内公布部分或全部内容。 \par \skip_vertical:n { 15 pt }
+    
+    \begin{enumerate}[leftmargin=4em, label=\arabic*、]
+        \item 在本论文提交当年，同意在校园网内以及中国高等教育文献保障系统（CALIS）、
+	高校学位论文系统提供查询及前十六页浏览服务。
+        \item 在本论文提交 ~\hbox:n { \textsquare } 当年/ ~\hbox:n { \textsquare }一年/
+	~\hbox:n { \textsquare } 两年/ ~\hbox:n { \textsquare }三年以后，同意在校园网
+	内允许读者在线浏览并下载全文，学校可以为存在馆际合作关系的兄弟高校用户提供文献
+	传递服务和交换服务。（保密论文解密后遵守此规定）
+    \end{enumerate}
+
+    \par \skip_vertical:n { 50 pt }
+    \noindent
     \begin { minipage } { 20 em }
-      \skip_set:Nn \baselineskip { 22 pt }
-      论文作者（签名）： \uline { \hfill } \par
-      学 \qquad 号： \uline { \hfill } \par
-      学 \qquad 院： \uline { \hfill }
-      \par \skip_vertical:n { 15.6 pt }
-      \hfill 日期： \qquad \qquad 年 \qquad 月 \qquad 日
+        \skip_set:Nn \baselineskip { 40 pt }
+        论文作者（签名）： \uline { \hfill } \par
+        学 \qquad 号： \uline { \hfill } \par
+        学 \qquad 院： \uline { \hfill }
     \end { minipage }
+    \par \skip_vertical:n { 100 pt }
+      \hfill 日期： \qquad \qquad 年 \qquad 月 \qquad 日 \qquad \qquad \quad
     \__whu_new_chapter_page:
   }
+
 
 %%% ---- 创新 ----- %%%
 \cs_new_protected:Npn \__whu_make_innovation:
@@ -1349,13 +1406,23 @@
 
     \bool_if:NT \g__whu_style_list_of_figures_bool
       {
-        \listoffigures
+        % \listoffigures
+        {
+            \let\oldnumberline\numberline
+            \renewcommand{\numberline}{\figurename\ \oldnumberline}
+            \listoffigures
+        }
         \__whu_new_chapter_page:
       }
 
     \bool_if:NT \g__whu_style_list_of_tables_bool
       {
-        \listoftables
+        % \listoftables
+        {
+            \let\oldnumberline\numberline
+            \renewcommand{\numberline}{\tablename\ \oldnumberline}
+            \listoftables
+        }
         \__whu_new_chapter_page:
       }
   }
@@ -1426,7 +1493,8 @@
 \cs_new_protected:Npn \__whu_make_back_matter_doctor:
   {
     \__whu_make_bibliography:
-    \__whu_make_achievements:
+    % \__whu_make_achievements:
+    \__whu_make_doctor_achievements:
     \__whu_make_thanks:
     \__whu_make_appendix:
     \__whu_make_spine:
@@ -1435,8 +1503,12 @@
 \cs_new_protected:Npn \__whu_make_back_matter_master:
   {
     \__whu_make_bibliography:
-    \__whu_make_appendix:
+    % \__whu_make_appendix:
+    % \__whu_make_thanks:
     \__whu_make_thanks:
+    \__whu_make_master_achievements:
+    \__whu_make_appendix:
+    \__whu_make_authorization:
   }
 
 \cs_new_protected:Npn \__whu_make_back_matter_bachelor:
@@ -1505,13 +1577,36 @@
   }
 
 %%%% ---- 攻博期间发表的科研成果目录 ---- %%%%
-\cs_new_protected:Npn \__whu_make_achievements:
+\cs_new_protected:Npn \__whu_make_doctor_achievements:
   {
     \tl_if_empty:NF \g__whu_element_achievements_tl
       {
         \chapter * { 攻博期间发表的科研成果目录 }
         \phantomsection
         \addcontentsline { toc } { chapter } { 攻博期间发表的科研成果目录 }
+        \tl_if_eq:NnTF \g__whu_style_bib_style_tl { author-year }
+          {
+            \begin { enumerate } [ label = {} , left = 0 pt .. 0 pt ]
+              \file_input:V \g__whu_element_achievements_tl
+            \end { enumerate }
+          }
+          {
+            \begin { enumerate } [ label = { [ } \arabic* { ] } ]
+              \file_input:V \g__whu_element_achievements_tl
+            \end { enumerate }
+          }
+      }
+  }
+
+%%%% ---- 攻硕期间发表的科研成果目录 ---- %%%%
+\cs_new_protected:Npn \__whu_make_master_achievements:
+  {
+    \tl_if_empty:NF \g__whu_element_achievements_tl
+      {
+
+        \chapter * { 攻硕期间取得的学术成果和参与的项目 }
+        \phantomsection
+        \addcontentsline { toc } { chapter } { 攻硕期间取得的学术成果和参与的项目 }
         \tl_if_eq:NnTF \g__whu_style_bib_style_tl { author-year }
           {
             \begin { enumerate } [ label = {} , left = 0 pt .. 0 pt ]

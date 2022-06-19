@@ -1,9 +1,14 @@
-# 武汉大学毕业论文 LaTeX 模板
+# 武汉大学毕业论文 LaTeX 模板（为学术硕士进行了优化）
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Last Commit](https://img.shields.io/github/last-commit/whutug/whu-thesis.svg)](https://github.com/whutug/whu-thesis/commits/)
-[![Overleaf](https://img.shields.io/badge/overleaf-whuthesis-green.svg)](https://www.overleaf.com/latex/templates/wuhan-university-latex-undergraduate-thesis-template/kpystysgbgmr)
-[![](https://github.com/whutug/whu-thesis/workflows/LaTeX%20Compile/badge.svg)](https://github.com/whutug/whu-thesis/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/BenjaminHb/whu-thesis.svg)](https://github.com/BenjaminHb/whu-thesis/commits/)
+[![Overleaf](https://img.shields.io/badge/overleaf-whuthesis-green.svg)]()
+[![](https://github.com/BenjaminHb/whu-thesis/workflows/LaTeX%20Compile/badge.svg)](https://github.com/BenjaminHb/whu-thesis/actions)
+
+**根据武汉大学学术硕士毕业论文的要求，本项目对 [whutug](https://github.com/whutug) 用户的 [whu-thesis](https://github.com/whutug/whu-thesis) 项目进行了微调，重点为学术硕士进行了优化。以下为原始 [README.md](https://github.com/whutug/whu-thesis/blob/master/README.md) 内容。**
+
+---
+
 
 本项目为武汉大学毕业论文 LaTeX 模板，支持本科生、硕士与博士的论文编写。
 

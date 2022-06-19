@@ -2,22 +2,45 @@
 %%
 %% Created by WHUTUG
 
-\documentclass{whu-thesis}
+\documentclass[type=master, class=academic]{whu-thesis}
+\usepackage{rotating}
+% 注释掉下面这行编译出来的即为不插入空白页，不注释则为插入空白页
+% \renewcommand{\cleardoublepage}{\clearpage}
+\newcommand{\figcite}[1]{\scalebox{1.3}[1.3]{\raisebox{-0.7ex}{\cite{#1}}}}
 \whusetup
   {
     info               =
       {
         title          = {武汉大学学位论文 \LaTeX{} 模板\\使用示例文档},
         title*         = {An Introduction to LaTeX Thesis Template\\of Wuhan University},
-        student-number = {xxxxxxxxxxxxx},
-        school         = {院系名称},
-        author         = {作者姓名},
-        author*        = {Your Name},
-        subject        = {学科},
-        major          = {专业名称},
-        advisor        = {教师姓名 , 职称},
-        direction      = {研究方向},
-        % date           = {2021/5},
+%%%%% ------------------------------------------------------------------- %%%%%
+        student-number = {20XX20211XXXX},
+        school         = {计算机学院},
+        school*        = {School of Computer Science},
+        author         = {XXxx},
+        author*        = {\sc xx XX},
+        clc            = {TP391},%%%%%
+        % subject        = {学科},
+        major          = {计算机科学与技术},
+        major*         = {Computer Science and Technology},
+        advisor        = {XXxx , 教授},
+        advisor*       = {\sc Prof.~xx XX},
+%%%%% -------------------- Upload System ----- BEGIN -------------------- %%%%%
+        % student-number = {},
+        % school         = {计算机学院},
+        % school*        = {School of Computer Science},
+        % author         = {},
+        % author*        = {},
+        % clc            = {TP391},%%%%%
+        % % subject        = {学科},
+        % major          = {计算机科学与技术},
+        % major*         = {Computer Science and Technology},
+        % advisor        = {},
+        % advisor*       = {},
+%%%%% -------------------- Upload System ----- END -------------------- %%%%%
+        direction      = {自然语言处理},%%%%
+        direction*     = {Natural Language Processing},%%%%
+        % date           = {2022/5},
         keywords       = {关键词 1 , 关键词 2 , 关键词 3 , 关键词 4 , 一个非常非常，非常非常长——的关键词 5},
         keywords*      = {key word 1 , key word 2 , key word 3 , key word 4 , {and a very very, very very long key word---the key word 5}},
       },
@@ -26,13 +49,17 @@
         graphics-path  = {{figures/}{data/}},
         list-of-figures,
         list-of-tables,
+        % bib-backend    = {bibtex},
+        bib-style      = {numerical},
+        cite-style     = {numerical-super},
+        cjk-font       = overleaf
       },
     element            =
       {
         innovation     = {pages/innovation},
         abstract       = {pages/abstract},
         abstract*      = {pages/enabstract},
-        bibliography   = {ref/refs , ref/thu},
+        bibliography   = {ref/refs},
         achievements   = {pages/achievements},
         thanks         = {pages/thanks},
         appendix       = {pages/appendix}
@@ -45,4 +72,6 @@
 \include{pages/chapter2}
 \include{pages/chapter3}
 \include{pages/chapter4}
+\include{pages/chapter5}
+\include{pages/chapter6}
 \end{document}
